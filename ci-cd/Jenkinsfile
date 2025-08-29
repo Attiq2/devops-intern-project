@@ -1,30 +1,44 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_IMAGE = "attiq1124/devops-intern-app:latest"
+        GIT_REPO = "https://github.com/Attiq2/devops-intern-project.git"
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url:  'https://github.com/Attiq2/devops-intern-project.git'
+                git branch: 'main', url: "${GIT_REPO}"
             }
         }
+
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t attiq1124/devops-intern-app:latest -f docker/Dockerfile .'
+                sh """
+                    docker build -t ${DOCKER_IMAGE} -f docker/Dockerfile .
+                """
             }
         }
+
         stage('Push Docker Image') {
             steps {
-                withCredentials([string(credentialsId: 'dockerhub-creds', variable: 'DOCKER_PASS')]) {
-                    sh 'echo $DOCKER_PASS | docker login -u your-dockerhub-username --password-stdin'
-                    sh 'docker push attiq1124/devops-intern-app:latest'
+                withCredentials([string(credentialsId: 'dockerhub-token', variable: 'DOCKER_TOKEN')]) {
+                    sh """
+                        echo "$DOCKER_TOKEN" | docker login -u attiq1124 --password-stdin
+                        docker push ${DOCKER_IMAGE}
+                    """
                 }
             }
         }
+
         stage('Deploy to Kubernetes') {
             steps {
-                sh 'kubectl apply -f k8s-manifests/'
+                sh """
+                    kubectl apply -f k8s-manifests/
+                    kubectl rollout status deployment/devops-intern-app-deployment
+                """
             }
         }
     }
 }
-
