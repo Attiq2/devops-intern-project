@@ -1,0 +1,19 @@
+- name: Setup DevOps Intern Project
+  hosts: all
+  become: true
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+
+    - name: Run App Container
+      docker_container:
+        name: devops-intern-app
+        image: attiq1124/devops-intern-app:latest
+        state: started
+        ports:
+          - "5000:5000"
+
+
