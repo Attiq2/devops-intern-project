@@ -36,7 +36,7 @@ pipeline {
             steps {
                 sh """
                     kubectl apply -f k8s-manifests/
-                    kubectl rollout status deployment/devops-intern-app-deployment
+                    kubectl rollout status deployment/devops-intern-app
                 """
             }
         }
