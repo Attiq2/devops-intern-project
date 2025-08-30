@@ -4,5 +4,5 @@ global:
 scrape_configs:
   - job_name: 'devops-intern-app'
     static_configs:
-      - targets: ['devops-intern-service:80']
+      - targets: ['devops-intern-service:5000']
 
