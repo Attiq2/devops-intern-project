@@ -9,7 +9,7 @@ REQUEST_COUNT = Counter('request_count', 'Total number of requests')
 @app.route('/')
 def home():
     REQUEST_COUNT.inc()
-    return "Hello from Flask CI/CD App!"
+    return "DevOPs Project Using Devops techniques"
 
 # Metrics endpoint for Prometheus
 @app.route('/metrics')
