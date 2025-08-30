@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: devops-intern-app-deployment
+  name: devops-intern-app
 spec:
   replicas: 2
   selector:
